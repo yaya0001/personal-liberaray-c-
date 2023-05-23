@@ -1,32 +1,528 @@
-# Prerequisites
-*.d
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <stdlib.h>
+#include <cstdlib>
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+//linked list implementation:
+using namespace std;
+struct node{
+    string data;
+    node* next;};
+class  linked_list{
+private:
+    node* head;
+public:
+    linked_list();
+    void insert_new(string val);
+    void show();
+    void insert_first(string val);
+    void insert_pos(string val,int pos);
+    void delet_first();
+    void delet_last();
+    void delet_pos(int pos);
+    int num_ele();
 
-# Precompiled Headers
-*.gch
-*.pch
+    string ele(int pos);
+    void save(string file_p);
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+};
+linked_list::linked_list(){
+head=NULL;
+}
+void linked_list::insert_new(string val){
+    node* new_node=new node;
+    new_node->data=val;
+    new_node->next=NULL;
 
-# Fortran module files
-*.mod
-*.smod
+    if (head==NULL){
+    head=new_node;
+    }
+    else{
+    node* current=head;
+    while (current->next!=NULL){
+        current=current->next;
+    }
+    current->next=new_node;
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+    }
 
-# Executables
-*.exe
-*.out
-*.app
+    }
+void linked_list:: show(){
+    int c=0;
+    if (head==NULL)
+       {
+       cout<<"your page is empty!!!"<<endl;
+
+       }
+    node* current=head;
+    while (current!=NULL){
+            c++;
+    cout<<c<<"- "<<current->data<<"\n";
+    current=current->next;
+
+
+    }}
+    void linked_list:: save(string file_path){
+    if (head==NULL)
+       {
+       }
+       int cc=0;
+    node* current=head;
+    ofstream f_file;
+    f_file.open(file_path,ios::out);
+    while (current!=NULL){
+            cc++;
+    f_file<<current->data<<"\n";
+    current=current->next;
+
+
+    }
+    f_file.close();}
+void linked_list::insert_first(string val){
+    node *new_node=new node;
+    new_node->data=val;
+    if (head==NULL){
+    new_node->next=NULL;
+    head->next=NULL;
+
+    }
+    else{
+    new_node->next=head;
+    head=new_node;
+
+    }}
+int linked_list::num_ele(){
+    int c=0;
+    node* current=head;
+    while(current!=NULL){
+    c++;
+    current=current->next;
+    }
+    return c;
+    }
+void linked_list::insert_pos(string val,int pos){
+    if (pos>num_ele()){
+    cout<<"out of range"<<endl;
+    }
+    else if(pos==1) {
+    insert_first(val);
+    }
+    else if (pos==num_ele()){
+    insert_new(val);
+
+    }
+    else{
+    node* new_node=new node;
+    new_node->data=val;
+    node* current=head;
+    for(int i=1;i<pos-1;i++){
+        current=current->next;
+    }
+    node* current2=current;
+    current2=current->next;
+    current->next=new_node;
+    new_node->next=current2;
+    }
+
+    }
+void linked_list::delet_first(){
+    node* head2=head;
+    if (head==NULL){
+    cout<<"it's already empty!!!"<<endl;}
+    else{ if (num_ele()==1){
+
+        head=NULL;
+        delete head2;
+
+
+    }
+
+    else if(num_ele()>1){
+        head=head->next;
+        head2->next=NULL;
+        delete head2;
+
+    }
+
+    }
+    }
+void linked_list::delet_last(){
+    node* head2=head;
+    node* head1=head;
+    if (head==NULL){
+    cout<<"DONE!!";
+    }
+    if (num_ele()==1){
+
+    delete head;
+    cout<<"done!!";
+    }
+    while(head2->next!=NULL){
+    head1=head2;
+    head2= head2->next;
+    }
+    head1->next=NULL;
+    delete head2;
+
+    }
+void linked_list::delet_pos(int pos){
+    if (pos==num_ele()){
+        delet_last();
+
+    }
+    else if (pos==1){
+
+    delet_first();
+    }
+    else if(pos<num_ele()){
+    node *prev=head;
+    node *nex=head;
+    for(int i=1;i<pos;i++){
+        prev=nex;
+        nex=nex->next;
+    }
+
+   prev->next=nex->next;
+   nex->next=NULL;
+   delete nex;
+  }
+
+    else {
+    cout<<"\tout of range\t";
+    }
+
+    }
+
+
+string linked_list:: ele(int pos){
+    node* current=head;
+    for(int i=1;i<pos;i++){
+        current=current->next;
+    }
+return current->data;
+}
+//the app main functions:
+class functions{
+private:
+int r=0;
+public:
+    functions();
+    void write_txtfile(string text,string file_path);
+    void sign_up(string v);
+    void sign_in(string user);
+    void start();
+};
+
+
+functions:: functions(){
+
+}
+
+
+void functions:: write_txtfile(string text,string file_path){
+    ofstream f_file;
+    f_file.open(file_path,ios::out);
+    f_file<<text<<"\n";
+    f_file.close();
+}
+
+void functions:: sign_up(string v){
+    write_txtfile("","F:/DATA/liberary/books to read "+v+".txt");      //path of the data base folder
+    write_txtfile("","F:/DATA/liberary/finished books "+v+".txt");
+    write_txtfile("","F:/DATA/liberary/my quotes "+v+".txt");
+    char q;
+    cout<<"you created an account successfully (:\n";
+    }
+
+void functions:: sign_in(string user)
+{
+    linked_list books_to_read;
+
+    int a;
+    int b;
+    int c;
+    string line;
+    string book;
+    string qoute;
+    ifstream my_file("F:/DATA/liberary/books to read "+user+".txt");
+    if (my_file.is_open()){
+             cout<<"Hello "+user+"\n-> here we go...\n";
+    getline(my_file,line);
+    while (my_file){
+        books_to_read.insert_new(line);
+    getline(my_file,line);
+
+    }
+    linked_list finished_books;
+    ifstream my_file("F:/DATA/liberary/finished books "+user+".txt");
+    getline(my_file,line);
+    while (my_file){
+       finished_books.insert_new(line);
+    getline(my_file,line);
+
+    }
+    linked_list my_quotes;
+    ifstream myfile("F:/DATA/liberary/my quotes "+user+".txt");
+    getline(myfile,line);
+    while (myfile){
+        my_quotes.insert_new(line);
+    getline(myfile,line);
+
+    }
+    label0:
+    cout<<"where do you want to go??\n";
+    cout<<" 1.your books to read list. \n 2.your finished books list. \n 3.my qoutes list\n 4.back\n";
+    cin>>a;
+    system("cls");
+    if (a==1){
+         label1:
+        cout<<"what do you want to do??\n 1.show. \n 2. add new book. \n 3. I finished a book. \n 4. Choose a random book to read.\n   5. back.\n";
+        cin>>b;
+        system("cls");
+        if (b==1){
+            books_to_read.show();
+        }
+        else if (b==2){
+            cout<<"enter the name of the new book: ";
+            cin.ignore();
+    getline(cin,book);
+            system("cls");
+            books_to_read.insert_new(book);
+            cout<<"DONE!!\n";
+
+        }
+        else if (b==3){
+                books_to_read.show();
+            cout<<"enter the book ID: ";
+            cin>>c;
+            system("cls");
+            finished_books.insert_new(books_to_read.ele(c));
+            books_to_read.delet_pos(c);
+            cout<<"DONE!!\n";
+        }
+        else if (b==4){
+                char qq='y';
+        while(qq=='y'){
+                books_to_read.show();
+            int r=books_to_read.num_ele();
+            int w=1+(rand()%r);
+            string u=books_to_read.ele(w);
+            cout<<"what about "+u+"??\n try again??";
+            cin>>qq;
+            system("cls");
+        }
+        }
+        else if (b==5){
+                system("cls");
+            goto label0;
+        }
+    else {cout<<"error\n";
+    }
+    cout<<"repeat??[Y\N]\n";
+         char ww;
+         cin>>ww;
+         if (ww=='Y'||ww=='y'){
+
+            system("cls");
+            goto label1;
+        }
+    else if (ww=='N'||ww=='n'){
+
+    system("cls");
+    books_to_read.save("F:/DATA/liberary/books to read "+user+".txt");
+    goto label0;
+    }
+
+         }
+
+
+else if(a==2){
+     int bb;
+      label2:
+     cout<<"what do you want to do??\n 1.show. \n 2.clear \n 3.back\n";
+
+     cin>>bb;
+     system("cls");
+     if (bb==1){
+        finished_books.show();
+     }
+else if (bb==2){
+        system("cls");
+    for(int i=0;i<=finished_books.num_ele()+2;i++){
+    finished_books.delet_last();}
+    finished_books.delet_first();
+}
+else if(bb==3){
+system("cls");
+  goto label0;
+
+}
+cout<<"rebeat??[Y\N]";
+char qq;
+
+cin>>qq;
+        if (qq=='Y'||qq=='y'){
+            system("cls");
+            goto label2;
+        }
+    else if (qq=='N'||qq=='n'){
+        system("cls");
+            finished_books.save("F:/DATA/liberary/finished books "+user+".txt");
+    goto label0;
+    }}
+    else if (a==3){
+    label3:
+            int y;
+    string qoute;
+        cout<<"what do you want to do??\n 1.show. \n 2.add a qoute. \n 3.clea\n 4.back.\n";
+        cin>>y;
+system("cls");
+        if (y==1){
+            my_quotes.show();
+        }
+        else if (y==2){
+            system("cls");
+            cout<<"enter the qoute: ";
+            cin>>qoute;
+        system("cls");
+            my_quotes.insert_new(qoute);
+        }
+        else if (y==3){
+                system("cls");
+                for(int i=0;i<=my_quotes.num_ele()+2;i++){
+    my_quotes.delet_last();}
+    my_quotes.delet_first();
+
+        }
+        else if (y==4){
+                system("cls");
+
+            goto label0;
+        }
+         cout<<"rebeat??[Y\N]";
+char qqq;
+
+cin>>qqq;
+        if (qqq=='Y'||qqq=='y'){
+                system("cls");
+            goto label3;
+        }
+    else if (qqq=='N'||qqq=='n'){
+            system("cls");
+            my_quotes.save("F:/DATA/liberary/my quotes "+user+".txt");
+    goto label0;
+    }
+    }
+    else if(a==4){
+        system("cls");
+        start();
+
+    }
+
+
+
+
+
+    }
+    else {
+    cout<<"This account is not found...."<<endl<<"Do you want to sign up? (Y/N)\n";
+    char q;
+    char qn;
+    cin>>q;
+    system("cls");
+        if (q=='Y'||q=='y'){
+    string user3;
+    cout<<"enter a user name: ";
+    cin.ignore();
+        getline(cin,user3);
+    system("cls");
+    sign_up(user3);
+    cout<<"So, do you want to sign in to your new account?? (Y/N) \n";
+        cin>>qn;
+        system("cls");
+        if (qn=='Y'||qn=='y'){
+            sign_in(user3);
+        }
+    else if (qn=='N'||qn=='n'){
+    start();
+    }}
+    else if(q=='N'||q=='n'){
+      start();
+    }
+  }}
+  void functions:: start(){int x;
+    lab0:
+    string user_name;
+    string user_name1;
+    char q;
+    st:
+    cout<<"                                            Welcome to your liberary\n "<<endl;
+    cout<<"What do you want to do??\n";
+    cout<<"     1- Sign in\n     2-Sign up\n     3-About the app...\n     4-close\n   come on choose a number!!\n";
+    cin>>x;
+    system("cls");
+    if (x==1){
+      cout<<"Ok enter your user name:  ";
+      cin.ignore();
+    getline(cin,user_name);
+        system("cls");
+        sign_in(user_name);
+
+    }
+    else if (x==2){
+        cout<<"Ok enter a user name:  ";
+        cin.ignore();
+        getline(cin,user_name1);
+            system("cls");
+        sign_up(user_name1);
+        cout<<"So, do you want to sign in to your new account?? (Y/N) \n";
+        cin>>q;
+            system("cls");
+
+        if (q=='Y'||q=='y'){
+
+        system("cls");
+        sign_in(user_name1);
+        }
+    else if (q=='N'||q=='n'){
+    goto st;
+
+    }}
+    else if (x==3){
+        cout<<" It's a liberary in your bocket. first you sign up to create an account then you can enjoy all the features of the app  \n THAT'S IT :)......";
+
+    }
+
+
+    else if (x==4){
+    exit(0);
+    }
+    if (x<=4){
+        cout<<"rebeat??[Y\N]";}
+        else {
+            cout<<"error\n";
+            cout<<"rebeat??[Y\N]";
+        }
+char q3;
+
+cin>>q3;
+        if (q3=='Y'||q3=='y'){
+         system("cls");
+
+            goto lab0;
+        }
+    else if (q3=='N'||q3=='n'){
+    exit(0);
+    }
+
+    }
+int main(){
+
+
+
+functions mm;
+mm.start();
+
+    return 0;
+}
